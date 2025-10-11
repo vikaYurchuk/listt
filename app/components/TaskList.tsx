@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Task } from '../models/Task';
 import TaskCard from './TaskCard';
-
-const api = 'https://dummyjson.com/todos';
+import TaskForm from './TaskForm';
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-  const myTasks: Task[] = [
-    { id: 1, todo: "clean out car", completed: false, userId: 1 },
-    { id: 2, todo: "bake a pie ", completed: true, userId: 1 },
-    { id: 3, todo: "buy a new house decoration", completed: false, userId: 1 },
-    { id: 4, todo: "watch a classic movie", completed: false, userId: 1 },
-  ];
-  setTasks(myTasks);
-  setLoading(false);
-}, []);
+    const myTasks: Task[] = [
+      { id: 1, todo: "clean out car", completed: false, userId: 1 },
+      { id: 2, todo: "bake a pie", completed: true, userId: 1 },
+      { id: 3, todo: "buy a new house decoration", completed: false, userId: 1 },
+      { id: 4, todo: "watch a classic movie", completed: false, userId: 1 },
+    ];
+    setTasks(myTasks);
+    setLoading(false);
+  }, []);
 
-  // useEffect(() => {
-  //   fetch(api)
-  //     .then(res => res.json())
-  //     .then(json => {
-  //       setTasks(json.todos);
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       Alert.alert('Error', err.message);
-  //       setLoading(false);
-  //     });
-  // }, []);
-
+  const handleAddTask = (data: { title: string; date: string; priority: string }) => {
+    const newTask: Task = {
+      id: tasks.length + 1,
+      todo: `${data.title} (${data.priority}, ${data.date})`,
+      completed: false,
+      userId: 1,
+    };
+    setTasks([newTask, ...tasks]);
+  };
 
   if (loading) {
     return (
@@ -44,8 +41,12 @@ export default function TaskList() {
 
   return (
     <View>
-      <Text style={styles.title}>ODOT List</Text>
-      <Text style={styles.date}>4th March 2018</Text>
+      <Text style={styles.title}>TODO List</Text>
+      <Text style={styles.date}>11th October 2025</Text>
+
+      {/* Підключаємо форму */}
+      <TaskForm onAddTask={handleAddTask} />
+
       <FlatList
         data={tasks}
         renderItem={({ item }) => <TaskCard item={item} />}
