@@ -77,7 +77,7 @@ export default function TaskForm({ onAddTask }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: '#8f6f6fff',
     margin: 16,
     padding: 16,
     borderRadius: 10,

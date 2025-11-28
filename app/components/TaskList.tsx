@@ -4,6 +4,8 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-nativ
 import { Task } from '../models/Task';
 import TaskCard from './TaskCard';
 import TaskForm from './TaskForm';
+import ProgressBar from './ProgressBar';
+
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -39,12 +41,18 @@ export default function TaskList() {
     );
   }
 
+
+  const completed = tasks.filter(t => t.completed).length;
+  const progress = tasks.length === 0 ? 0 : Math.round((completed / tasks.length) * 100);
+
   return (
     <View>
       <Text style={styles.title}>TODO List</Text>
       <Text style={styles.date}>11th October 2025</Text>
 
-      {/* Підключаємо форму */}
+      <ProgressBar progress={progress} />
+
+     
       <TaskForm onAddTask={handleAddTask} />
 
       <FlatList
@@ -56,6 +64,7 @@ export default function TaskList() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   title: {
